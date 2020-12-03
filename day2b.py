@@ -40,6 +40,9 @@ def check_condition(condition, input):
                 b = False
 
             end = 0
+        
+        if a and b:
+            return False
 
         if end == 0:
             if a and not b:
