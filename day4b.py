@@ -8,41 +8,32 @@ def conditions(val):
 
     if cond == 'byr':
         if len(info) == 4 and int(info) >= 1920 and int(info) <= 2002:
-            print(cond)
             return 1
     elif cond == 'iyr':
         if len(info) == 4 and int(info) >= 2010 and int(info) <= 2020:
-            print(cond)
             return 1
     elif cond == 'eyr':
         if len(info) == 4 and int(info) >= 2020 and int(info) <= 2030:
-            print(cond)
             return 1
     elif cond == 'hgt':
         if info[-2:] == 'cm':
             check_ = int(info[0:len(info) - 2])
             if check_ >= 150 and check_ <= 193:
-                print(cond)
                 return 1
         if info[-2:] == 'in':
             check_ = int(info[0:len(info) - 2])
             if check_ >= 59 and check_ <= 76:
-                print(cond)
                 return 1
     elif cond == 'hcl':
         if re.match('#{1}[0-9|a-z]{6}$', info):
-            print(cond)
             return 1
     elif cond == 'ecl':
         if info in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']:
-            print(cond)
             return 1
     elif cond == 'pid':
         if re.match('[0-9]{8}[0-9]{1}$', info):
-            print(cond)
             return 1
     elif cond == 'cid':
-        print(cond)
         return 1
 
     return 0
@@ -50,7 +41,6 @@ def conditions(val):
 def func(check):
     x = [i for i in check.split(' ')]
     all_valid = 0
-    print('.........................................')
 
     if len(x) < 7:
         return 0
@@ -62,8 +52,6 @@ def func(check):
         if all_valid == 8:
             return 1
         else:
-            if all_valid == 7:
-                print(x)
             return 0
 
     if len(x) == 7:
@@ -89,7 +77,5 @@ for line in data:
         valid = valid + func(str_to_check[1:len(str_to_check)])
     else:
         str_to_check = str_to_check + ' ' + line.strip()
-
-
 
 print(valid)
