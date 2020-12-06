@@ -1,24 +1,15 @@
-data = open('day6.txt', 'r').read().splitlines()
-c, sum, new_ =  0, 0, True
 
-for line in data:
+inputString = open('day6.txt', 'r').read().splitlines()
+totalCount, currentSet, start = 0, set(), True
 
-	if line == '':
-		new_ = True
-		sum = sum + len(list(a))
-
-	if c + 1 == len(data):
-		a.intersection_update(line)
-		if a:
-			sum = sum + len(list(a))
-
-	if new_ == True:
-		a = set(line)
-		new = Falseii
-	else:
-		a.intersection_update(line)
-		print(a)
-
-	c += 1
-
-print(sum)
+for line in inputString:
+    if line == "":
+        totalCount += len(currentSet)
+        currentSet, start = set(), True
+    else:
+        if start:
+            currentSet, start = set(line), False
+        else:
+            currentSet.intersection_update(set(line))
+totalCount += len(currentSet)
+print(totalCount)
