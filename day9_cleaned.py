@@ -4,7 +4,8 @@ global_pos = 0
 
 def initiate_protocol(data, pos):
     injection, unpack = data[pos:pos+25], data[pos+25]
-    while not find_weakness(injection, unpack, pos): pos += 1
+    while not find_weakness(injection, unpack, pos):
+        pos += 1
         initiate_protocol(data, pos)
 
 def find_weakness(injection, search_val, pos):
