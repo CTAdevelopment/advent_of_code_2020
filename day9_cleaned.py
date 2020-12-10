@@ -27,19 +27,17 @@ def break_encryption(data, search_val, found_pos):
 
     while not hacked:
 
-        for i in range(len(search_data) - 1):
+        for i in range(len(search_data) - c_val - 1):
 
-            if (c_val + 1 + i) > (len(search_data) - 1):
-                break
-            elif int(dyn_search_val) + int(search_data[c_val + i]) != search_val:
-                used_codes_to_decrypt.append(int(search_data[c_val + i]))
-                dyn_search_val += int(search_data[c_val + i])
-                continue
-            else:
-                print('hack_found')
+            if dyn_search_val == search_val:
                 hacked = True
                 print(min(used_codes_to_decrypt) + max(used_codes_to_decrypt))
                 sys.exit()
+
+            if int(dyn_search_val) + int(search_data[c_val + i]) != search_val:
+                used_codes_to_decrypt.append(int(search_data[c_val + i]))
+                dyn_search_val += int(search_data[c_val + i])
+                continue
 
         c_val += 1
 
@@ -50,9 +48,5 @@ def break_encryption(data, search_val, found_pos):
             sys.exit()
 
         used_codes_to_decrypt = [dyn_search_val]
-
-
-    print('stop')
-    sys.exit()
 
 initiate_protocol(data, global_pos)
