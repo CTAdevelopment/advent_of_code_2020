@@ -16,23 +16,3 @@ def determine_voltage(data, used_voltages):
                 return
 
 determine_voltage(data, used_voltages)
-
-inputString = [int(i) for i in open("day10text.txt", "r").read().splitlines()]
-inputString.sort()
-inputString.insert(0, 0)
-inputString.append(inputString[len(inputString)-1] + 3)
-
-delta = [inputString[n]-inputString[n-1] for n in range(1, len(inputString))]
-print(delta.count(1) * delta.count(3))
-print(delta)
-import sys
-
-def term(n):
-    if n == 1:
-        return 3
-    elif n == 2:
-        return 4
-    elif n == 3:
-        return 7
-
-x = [term(len(list(g))) for k, g in groupby(delta) if k == 1]
