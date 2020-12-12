@@ -23,29 +23,28 @@ def data_framing():
 
     return frame
 
-def search_for_all_seats(z):
+def search_for_all_seats(some_frame, z):
     global changed_seats
     global occupied_seats
-    global frame
     c = 0
 
-    for i, j in enumerate(frame[z]):
-        new_state_seat = human_behavior(frame, j, i, z)
-        frame.at[i, z] = new_state_seat
+    for i, j in enumerate(some_frame[z]):
+        new_state_seat = human_behavior(some_frame, j, i, z)
+        some_frame.at[i, z] = new_state_seat
 
         if new_state_seat != j:
             changed_seats += 1
             if new_state_seat == '#':
                 occupied_seats += 1
 
-        if c + 1 == len(frame[z]):
-            if z + 1 == len(frame.columns) - 1:
+        if c + 1 == len(some_frame[z]):
+            if z + 1 == len(some_frame.columns) - 1:
                 print('total numbers of changed seats: ', changed_seats, 'total occupied seats', occupied_seats)
-                del z
-                search_for_all_seats(0)
+                new_frame = some_frame.copy()
+                search_for_all_seats(new_frame, 0)
             else:
                 z += 1
-                search_for_all_seats(z)
+                search_for_all_seats(some_frame, z)
 
         c += 1
 
@@ -93,4 +92,4 @@ def human_behavior(frame, occupation, seat_row, seat_col):
             return 'L'
 
 frame = data_framing()
-search_for_all_seats(0)
+search_for_all_seats(frame, 0)
