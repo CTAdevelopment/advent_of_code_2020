@@ -1,4 +1,4 @@
-data, used_voltages = [int(i) for i in open('day10text.txt', 'r').read().splitlines()], [0, 3]
+data, used_voltages = [int(i) for i in open('day10.txt', 'r').read().splitlines()], [0, 3]
 data.sort()
 from itertools import groupby
 
