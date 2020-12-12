@@ -1,7 +1,6 @@
 import pandas as pd
 import sys, os
-
-changed_seats = 0
+changed_seats, occupied_seats = 0, 0
 
 def data_framing():
     if not os.path.exists('day11.xlsx'):
@@ -26,18 +25,24 @@ def data_framing():
 
 def search_for_all_seats(z):
     global changed_seats
+    global occupied_seats
+    global frame
     c = 0
+
     for i, j in enumerate(frame[z]):
         new_state_seat = human_behavior(frame, j, i, z)
         frame.at[i, z] = new_state_seat
+
         if new_state_seat != j:
             changed_seats += 1
-
+            if new_state_seat == '#':
+                occupied_seats += 1
 
         if c + 1 == len(frame[z]):
             if z + 1 == len(frame.columns) - 1:
-                print('total numbers of changed seats: ', changed_seats)
-                break
+                print('total numbers of changed seats: ', changed_seats, 'total occupied seats', occupied_seats)
+                del z
+                search_for_all_seats(0)
             else:
                 z += 1
                 search_for_all_seats(z)
@@ -49,20 +54,21 @@ def human_behavior(frame, occupation, seat_row, seat_col):
         count_taken = 0
         surrounding_chairs_occupation = []
 
-        #get each surrounding value
-        try: surrounding_chairs_occupation.append(frame.at[seat_row, seat_col+1])
-        except: None
-        try: surrounding_chairs_occupation.append(frame.at[seat_row+1, seat_col+1])
-        except: None
-        try: surrounding_chairs_occupation.append(frame.at[seat_row+1, seat_col])
+        try: surrounding_chairs_occupation.append(frame.at[seat_row-1, seat_col-1])
         except: None
         try: surrounding_chairs_occupation.append(frame.at[seat_row-1, seat_col])
         except: None
         try: surrounding_chairs_occupation.append(frame.at[seat_row-1, seat_col+1])
         except: None
-        try: surrounding_chairs_occupation.append(frame.at[seat_row-1, seat_col-1])
-        except: None
         try: surrounding_chairs_occupation.append(frame.at[seat_row, seat_col-1])
+        except: None
+        try: surrounding_chairs_occupation.append(frame.at[seat_row, seat_col+1])
+        except: None
+        try: surrounding_chairs_occupation.append(frame.at[seat_row+1, seat_col-1])
+        except: None
+        try: surrounding_chairs_occupation.append(frame.at[seat_row+1, seat_col])
+        except: None
+        try: surrounding_chairs_occupation.append(frame.at[seat_row+1, seat_col+1])
         except: None
 
         count_taken = surrounding_chairs_occupation.count('#')
