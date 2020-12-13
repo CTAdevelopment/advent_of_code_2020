@@ -1,5 +1,6 @@
-data = open('day12.txt', 'r').read().splitlines()
+data = open('day12test.txt', 'r').read().splitlines()
 c_direction = 'E'
+
 positions_coordinates_1 = {
     'N' : 0,
     'E' : 0,
@@ -117,6 +118,8 @@ def move_ment_two(move, steps):
 
         wavepoint = n_wave_point
         wave_point_spot = n_spots
+
+    print(wavepoint)
 
 for line in data:
     move = line[0]
