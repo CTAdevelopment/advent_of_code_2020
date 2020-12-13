@@ -105,6 +105,7 @@ def move_ment_two(move, steps):
         n_spots = []
         for j in wave_point_spot:
             n_spots.append(rotation(move, steps, j))
+        ''' KC last note: create a new dict and del old one '''
         for i in wavepoint.keys():
             value_in = wavepoint[i]
             new_pos = rotation(move, steps, i)
