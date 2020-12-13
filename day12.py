@@ -18,7 +18,7 @@ wavepoint = {
     'S' : 0,
     'W' : 0}
 
-wave_point_spot = ['E', 'N']
+wave_point_spot = ['N', 'E']
 
 def rotation(left_right, degrees, c_direction):
     if left_right == 'L':
@@ -93,6 +93,7 @@ def move_ment_one(move, steps):
 
 def move_ment_two(move, steps):
     global wave_point_spot
+    global wavepoint
 
     if move in ['N', 'E', 'S', 'W']:
         wavepoint[move] += int(steps)
@@ -103,14 +104,18 @@ def move_ment_two(move, steps):
 
     if move in ['L', 'R']:
         n_spots = []
+        n_wave_point  = {}
         for j in wave_point_spot:
-            n_spots.append(rotation(move, steps, j))
-        ''' KC last note: create a new dict and del old one '''
-        for i in wavepoint.keys():
-            value_in = wavepoint[i]
-            new_pos = rotation(move, steps, i)
-            wavepoint[new_pos] = value_in
+            n_spot = rotation(move, steps, j)
+            n_spots.append(n_spot)
+            n_wave_point[n_spot] = wavepoint[j]
 
+        ''' KC last note: create a new dict and del old one '''
+        for k in wavepoint.keys():
+            if k not in n_wave_point:
+                n_wave_point[k] = wavepoint[k]
+
+        wavepoint = n_wave_point
         wave_point_spot = n_spots
 
 for line in data:
