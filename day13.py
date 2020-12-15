@@ -15,3 +15,7 @@ print( min(all_departure_times, key=all_departure_times.get) * (min(all_departur
 print( (time.time_ns() - nu) / 1000000 )
 
 {int(x) - (int(inputString[0]) % int(x)): int(x) for x in inputString[1].split(",") if x != "x"}
+
+def partOne():
+    timeTable = {int(x) - (int(inputString[0]) % int(x)): int(x) for x in inputString[1].split(",") if x != "x"}
+    print(min(timeTable.keys()) * timeTable[min(timeTable.keys())])
