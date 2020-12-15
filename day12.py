@@ -1,5 +1,7 @@
-data = open('day12test.txt', 'r').read().splitlines()
+data = open('day12.txt', 'r').read().splitlines()
 c_direction = 'E'
+import matplotlib
+from matplotlib import pyplot as plt
 
 positions_coordinates_1 = {
     'N' : 0,
@@ -119,6 +121,11 @@ def move_ment_two(move, steps):
         wavepoint = n_wave_point
         wave_point_spot = n_spots
 
+    x = positions_coordinates_2['N'] + positions_coordinates_2['S']
+    y = positions_coordinates_2['W'] + positions_coordinates_2['E']
+
+    #plt.scatter(wavepoint['N'] + wavepoint['S'], wavepoint['E'] + wavepoint['W'], '-r')
+    plt.scatter(x , y , '-b')
     print(wavepoint)
 
 for line in data:
@@ -126,6 +133,11 @@ for line in data:
     steps = line[1:len(line)]
     move_ment_one(move, steps)
     move_ment_two(move, steps)
+
+plt.xlabel('West - Oost')
+plt.ylabel('North - South')
+plt.tight_layout()
+plt.show()
 
 print('final cords day 12A:',positions_coordinates_1)
 manhatten = (positions_coordinates_1['E'] - positions_coordinates_1['W']) + (positions_coordinates_1['S'] - positions_coordinates_1['N'])

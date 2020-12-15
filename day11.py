@@ -1,6 +1,7 @@
 import pandas as pd
 import sys, os
 changed_seats, occupied_seats = 0, 0
+from copy import deepcopy
 
 def data_framing():
     if not os.path.exists('day11.xlsx'):
