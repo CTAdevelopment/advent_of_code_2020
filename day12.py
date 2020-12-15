@@ -9,19 +9,8 @@ positions_coordinates_1 = {
     'S' : 0,
     'W' : 0}
 
-positions_coordinates_2 = {
-    'N' : 0,
-    'E' : 0,
-    'S' : 0,
-    'W' : 0}
 
-wavepoint = {
-    'N' : 1,
-    'E' : 10,
-    'S' : 0,
-    'W' : 0}
-
-wave_point_spot = ['N', 'E']
+translations = {"N": [0, 1], "E": [1, 0], "S": [0, -1], "W": [-1, 0]}
 
 def rotation(left_right, degrees, c_direction):
     if left_right == 'L':
@@ -94,55 +83,41 @@ def move_ment_one(move, steps):
     if move in ['L', 'R']:
         c_direction = rotation(move, steps, c_direction)
 
-def move_ment_two(move, steps):
-    global wave_point_spot
-    global wavepoint
+def move_ment_two():
+    x, y, wayX, wayY = 0, 0, 10, 1
 
-    if move in ['N', 'E', 'S', 'W']:
-        wavepoint[move] += int(steps)
+    for line in data:
+        move = line[0]
+        steps = line[1:len(line)]
 
-    if move == 'F':
-        for i in wave_point_spot:
-            positions_coordinates_2[i] += (int(steps) * wavepoint[i])
+        if move in ['N', 'E', 'S', 'W']:
+            wayX += translations[move][0] * int(steps)
+            wayY += translations[move][1] * int(steps)
 
-    if move in ['L', 'R']:
-        n_spots = []
-        n_wave_point  = {}
-        for j in wave_point_spot:
-            n_spot = rotation(move, steps, j)
-            n_spots.append(n_spot)
-            n_wave_point[n_spot] = wavepoint[j]
+        if move == 'F':
+            x += (int(steps) * wayX)
+            y += (int(steps) * wayY)
 
-        ''' KC last note: create a new dict and del old one '''
-        for k in wavepoint.keys():
-            if k not in n_wave_point:
-                n_wave_point[k] = wavepoint[k]
+        if move in ['L', 'R']:
+            if move == 'L':
+                for i in range(0, int(int(steps) / 90)):
+                    newX, newY = -wayY, wayX
+                    wayX, wayY = newX, newY
+            elif move == 'R':
+                for i in range(0, int(int(steps) / 90)):
+                    newX, newY = wayY, -wayX
+                    wayX, wayY = newX, newY
 
-        wavepoint = n_wave_point
-        wave_point_spot = n_spots
-
-    x = positions_coordinates_2['N'] + positions_coordinates_2['S']
-    y = positions_coordinates_2['W'] + positions_coordinates_2['E']
-
-    #plt.scatter(wavepoint['N'] + wavepoint['S'], wavepoint['E'] + wavepoint['W'], '-r')
-    plt.scatter(x , y , '-b')
-    print(wavepoint)
+    print(abs(x) + abs(y))
 
 for line in data:
     move = line[0]
     steps = line[1:len(line)]
     move_ment_one(move, steps)
-    move_ment_two(move, steps)
 
-plt.xlabel('West - Oost')
-plt.ylabel('North - South')
-plt.tight_layout()
-plt.show()
 
 print('final cords day 12A:',positions_coordinates_1)
 manhatten = (positions_coordinates_1['E'] - positions_coordinates_1['W']) + (positions_coordinates_1['S'] - positions_coordinates_1['N'])
 print('manhatten distance day 12A:', manhatten)
 
-print('final cords day 12B:',positions_coordinates_2, wavepoint)
-manhatten2 = (positions_coordinates_2['E'] - positions_coordinates_2['W']) + (positions_coordinates_2['S'] - positions_coordinates_2['N'])
-print('manhatten distance day 12B:', manhatten2)
+move_ment_two()
