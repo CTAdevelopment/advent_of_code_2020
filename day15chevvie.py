@@ -29,17 +29,17 @@ def one():
 
 def two():
     start_data = [13,16,0,12,15,1]
-    x = 2020 - len(start_data)
+    x = (2020 - len(start_data))
 
     while x != 0:
 
+        print(start_data)
         a = start_data[-1]
         z = start_data[0:len(start_data) - 1]
 
         if a in z:
             new = len(start_data) - start_data[0: len(start_data) - 1].index(a) -1
             start_data.append(new)
-            print(start_data)
         else:
             start_data.append(0)
 
