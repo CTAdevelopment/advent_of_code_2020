@@ -1,7 +1,6 @@
 params = open('ticket_params.txt', 'r').read().splitlines()
 lines = open('tickets.txt', 'r').read().splitlines()
 
-
 def part_One(params, lines):
     sum=0
     global kaassouffle
@@ -32,56 +31,78 @@ def part_One(params, lines):
     print(sum)
     return valid_ids
 
-valid_ids = part_One(params, lines)
-print(len(lines))
-print(len(valid_ids))
+def tickets_with_unique_values(id):
 
-def define_order_params(valid_ids_1):
+    unsorted_tickets = [int(i) for i in id.split(',')]
+    temp = dict.fromkeys(unsorted_tickets)
 
-    kroket = {i : [0, 0] for i in kaassouffle.keys()}
+    if len(unsorted_tickets) == len(list(temp.keys())):
+        return unsorted_tickets
+    else:
+        return None
+
+def map_ticket_to_params(tickets):
+
+    kroket = {i : [] for i in kaassouffle.keys()}
     found_ticket_locations = []
 
-    for ticket in [int(i) for i in valid_ids_1.split(',')]:
-        ticket_ind = valid_ids_1.index(str(ticket))
+    for ticket in tickets:
+        ticket_ind = tickets.index(ticket)
 
         for id, values in kaassouffle.items():
             if ticket in values[0] or ticket in values[1]:
-                if kroket[id][0] == ticket_ind:
-                    continue
-                else:
-                    kroket[id] = ticket_ind, ticket
-                    found_ticket_locations.append(ticket)
-                    print(ticket)
+                kroket[id].append(ticket_ind)
+                continue
 
-        if ticket == valid_ids_1[-1]:
-            temp_list = []
+    return kroket
 
-            while len(found_ticket_locations) != len(valid_ids_1.split(',')):
-                for id in [int(i) for i in valid_ids_1.split(',')]:
-                    id_index = valid_ids_1.index(str(id))
-                    if id not in found_ticket_locations:
-                        print('id not found in kroket:',id)
-                        for idx, valuesx in kaassouffle.items():
-                            if id in valuesx[0] or id in valuesx[1]:
-                                found_ticket_locations.append(id)
-                                temp_list.append(kroket[idx])
-                                found_ticket_locations.remove(kroket[idx][1])
-                                kroket[idx] = id_index, id
-                                continue
+def all_options(valid_ids):
+    all_options = []
+    for id in valid_ids:
+        unique_ticket_row = tickets_with_unique_values(id)
 
-                if len(temp_list) > 0:
-                    for i in temp_list:
-                        ticket_ind = i[0]
-                        ticket_ = i[1]
-                        for idx, valuesx in kaassouffle.items():
-                            if ticket_ in valuesx[0] or ticket_ in valuesx[1] and kroket[idx][0] == 0:
-                                kroket[idx] = ticket_ind, ticket_
-                                continue
+        if unique_ticket_row:
+            possibilities = map_ticket_to_params(unique_ticket_row)
+            all_options.append(possibilities)
 
-    print(kroket)
+    return all_options
+
+def determine_order_of_params(all_options):
+    unfit_params = {k : [] for k in kaassouffle.keys()}
+
+    for option in all_options:
+        for key, val in option.items():
+            for i in range(20):
+                if i not in val and i not in unfit_params[key]:
+                    unfit_params[key].append(i + 1)
 
 
+    return unfit_params
+
+def legit_options(unfit_params):
+    legit_options = {k : [] for k in kaassouffle.keys()}
+
+    for key, val in unfit_params.items():
+        for i in range(1, 21):
+            if i not in val and i not in legit_options[key]:
+                legit_options[key].append(i)
+
+    return legit_options
+
+def final_options(possible_order, unfit_params):
+
+    for key, val in possible_order.items():
+        return
 
 
+    pass
+    return the_truth
 
-define_order_params(valid_ids[0])
+
+valid_ids = part_One(params, lines)
+all_options = all_options(valid_ids)
+unfit_params = determine_order_of_params(all_options)
+possible_order = legit_options(unfit_params)
+print(possible_order)
+print('..............')
+print(unfit_params)
