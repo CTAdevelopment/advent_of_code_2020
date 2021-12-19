@@ -41,68 +41,33 @@ def tickets_with_unique_values(id):
     else:
         return None
 
-def map_ticket_to_params(tickets):
-
+def ticket_indexation_possibilities(valid_ids):
     kroket = {i : [] for i in kaassouffle.keys()}
-    found_ticket_locations = []
 
-    for ticket in tickets:
-        ticket_ind = tickets.index(ticket)
+    for id in valid_ids:
+        ticket_row = tickets_with_unique_values(id)
+        if not ticket_row:
+            continue
 
-        for id, values in kaassouffle.items():
-            if ticket in values[0] or ticket in values[1]:
-                kroket[id].append(ticket_ind)
-                continue
+        for ticket in ticket_row:
+
+            ticket_ind = ticket_row.index(ticket)
+
+            for id, values in kaassouffle.items():
+                if ticket in values[0] or ticket in values[1]:
+                    if ticket_ind not in kroket[id]:
+                        kroket[id].append(ticket_ind)
+                        continue
+                elif ticket_ind in kroket[id]:
+                    kroket[id].remove(ticket_ind)
 
     return kroket
 
-def all_options(valid_ids):
-    all_options = []
-    for id in valid_ids:
-        unique_ticket_row = tickets_with_unique_values(id)
-
-        if unique_ticket_row:
-            possibilities = map_ticket_to_params(unique_ticket_row)
-            all_options.append(possibilities)
-
-    return all_options
-
-def determine_order_of_params(all_options):
-    unfit_params = {k : [] for k in kaassouffle.keys()}
-
-    for option in all_options:
-        for key, val in option.items():
-            for i in range(20):
-                if i not in val and i not in unfit_params[key]:
-                    unfit_params[key].append(i + 1)
-
-
-    return unfit_params
-
-def legit_options(unfit_params):
-    legit_options = {k : [] for k in kaassouffle.keys()}
-
-    for key, val in unfit_params.items():
-        for i in range(1, 21):
-            if i not in val and i not in legit_options[key]:
-                legit_options[key].append(i)
-
-    return legit_options
-
-def final_options(possible_order, unfit_params):
-
-    for key, val in possible_order.items():
-        return
-
-
-    pass
-    return the_truth
-
 
 valid_ids = part_One(params, lines)
-all_options = all_options(valid_ids)
-unfit_params = determine_order_of_params(all_options)
-possible_order = legit_options(unfit_params)
-print(possible_order)
-print('..............')
-print(unfit_params)
+ticket_mogelijkheden = ticket_indexation_possibilities(valid_ids[0:3])
+
+for i, j in ticket_mogelijkheden.items():
+    print(len(j), i)
+
+print(ticket_mogelijkheden)
